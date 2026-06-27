@@ -107,17 +107,19 @@ def transform_lower_case(text):
         
     return " ".join(y)
 
-# 4. Load the model and vectorizer with resource caching
+# 4. Load the model and vectorizer with resource caching (Cloud-Safe Update)
 @st.cache_resource
 def load_models():
-    # Dynamically find the absolute path of the directory containing app.py
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    
-    # Create the absolute paths to your pickle files
     vectorizer_path = os.path.join(BASE_DIR, 'vectorizer.pkl')
     model_path = os.path.join(BASE_DIR, 'model.pkl')
     
-    # Load the files
+    if not os.path.exists(vectorizer_path):
+        CLOUD_DIR = "DataScience-Task4-EmailSpamDetection/app"
+        vectorizer_path = os.path.join(CLOUD_DIR, 'vectorizer.pkl')
+        model_path = os.path.join(CLOUD_DIR, 'model.pkl')
+    
+    # Load the verified file paths
     tfidf = pickle.load(open(vectorizer_path, 'rb'))
     model = pickle.load(open(model_path, 'rb'))
     return tfidf, model
