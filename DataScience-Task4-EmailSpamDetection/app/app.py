@@ -5,6 +5,8 @@ from nltk.corpus import stopwords
 import string
 from nltk.stem.porter import PorterStemmer
 
+import os
+
 # force download
 nltk.download('punkt')
 nltk.download('punkt_tab')
@@ -108,8 +110,16 @@ def transform_lower_case(text):
 # 4. Load the model and vectorizer with resource caching
 @st.cache_resource
 def load_models():
-    tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
-    model = pickle.load(open('model.pkl', 'rb'))
+    # Dynamically find the absolute path of the directory containing app.py
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    
+    # Create the absolute paths to your pickle files
+    vectorizer_path = os.path.join(BASE_DIR, 'vectorizer.pkl')
+    model_path = os.path.join(BASE_DIR, 'model.pkl')
+    
+    # Load the files
+    tfidf = pickle.load(open(vectorizer_path, 'rb'))
+    model = pickle.load(open(model_path, 'rb'))
     return tfidf, model
 
 try:
