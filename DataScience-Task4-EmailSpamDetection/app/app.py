@@ -5,6 +5,13 @@ from nltk.corpus import stopwords
 import string
 from nltk.stem.porter import PorterStemmer
 
+# force download
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+
+
+
 # 1. Set page configuration (Must be the very first Streamlit command)
 st.set_page_config(
     page_title="Email/SMS Spam Detector",
